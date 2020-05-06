@@ -96,23 +96,16 @@ const Dashboard = ({ history, location }) => {
           ))}
         </Box>
         <Box flex="1" pl="15rem">
-          <Flex bg={colors.pink[500]}>
-            {activeAccount ? (
-              <Account account={activeAccount} single />
-            ) : (
-              <>
-                {state.accounts.map((a) => (
-                  <Account key={a.id} account={a} />
-                ))}
-              </>
-            )}
-          </Flex>
           {activeAccount && (
-            <Box p="2rem">
-              <Balance account={activeAccount.id} period={period} />
-
-              <Transactions account={activeAccount} period={period} />
-            </Box>
+            <>
+              <Flex bg={colors.pink[500]}>
+                <Account account={activeAccount} single />
+              </Flex>
+              <Box p="2rem">
+                <Balance account={activeAccount.id} period={period} />
+                <Transactions account={activeAccount} period={period} />
+              </Box>
+            </>
           )}
         </Box>
       </Flex>
