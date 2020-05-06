@@ -41,8 +41,8 @@ const Dashboard = ({ history, location }) => {
         alignItems="center"
         justifyContent="center"
       >
-        <Box>
-          <Heading>Please allow access via the Monzo app and try again</Heading>
+        <Box textAlign="center">
+          <Heading size="lg">Please allow access via the Monzo app</Heading>
           <Button variantColor="pink" onClick={makeCall} m="2rem 0">
             Try again
           </Button>
