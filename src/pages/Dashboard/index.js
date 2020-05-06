@@ -4,25 +4,52 @@ import Header from "../../components/Header";
 import Balance from "../../components/Balance";
 import Transactions from "../../components/Transactions";
 import Account from "../../components/Account";
-import { Box, Flex, Link, useTheme, Heading } from "@chakra-ui/core";
+import { Box, Flex, Link, useTheme, Heading, Button } from "@chakra-ui/core";
 import qs from "query-string";
 import usePeriod from "./usePeriod";
 
 const Dashboard = ({ history, location }) => {
   const [state, setState] = useState();
+  const [error, setError] = useState();
   const { colors } = useTheme();
   const period = usePeriod();
 
-  useEffect(() => {
-    api.get("/accounts").then(({ data }) => {
-      setState({
-        accounts: data.accounts,
-        user: data.accounts[0].owners[0],
+  const makeCall = () => {
+    api
+      .get("/accounts")
+      .then(({ data }) => {
+        setState({
+          accounts: data.accounts,
+          user: data.accounts[0].owners[0],
+        });
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
       });
-    });
-  }, []);
+  };
+
+  useEffect(makeCall, []);
 
   const query = qs.parse(location.search);
+
+  if (error) {
+    return (
+      <Flex
+        flexDirection="column"
+        minH="100vh"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box>
+          <Heading>Please allow access via the Monzo app and try again</Heading>
+          <Button variantColor="pink" onClick={makeCall} m="2rem 0">
+            Try again
+          </Button>
+        </Box>
+      </Flex>
+    );
+  }
 
   if (!state) return null;
 

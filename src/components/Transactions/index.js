@@ -46,8 +46,6 @@ const Transactions = ({ account, period }) => {
 
   if (!state) return null;
 
-  console.log(state.roundups);
-
   return (
     <Flex>
       <Panel
