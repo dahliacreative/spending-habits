@@ -12,7 +12,7 @@ const Authenticate = ({ history, location }) => {
     formData.set("grant_type", "authorization_code");
     formData.set("client_id", process.env.REACT_CLIENT_ID);
     formData.set("client_secret", process.env.REACT_CLIENT_SECRET);
-    formData.set("redirect_uri", "http://localhost:3000/authenticate");
+    formData.set("redirect_uri", process.env.REACT_REDIRECT);
     formData.set("code", code);
     api.post("/oauth2/token", formData.toString()).then((res) => {
       api.defaults.headers.common = {
