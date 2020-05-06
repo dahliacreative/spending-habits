@@ -16,7 +16,6 @@ const Panel = ({
       d="flex"
       flex="1"
       flexDirection="column"
-      minH="15rem"
       borderWidth="1px"
       borderRadius="4px"
       boxShadow="1px 1px 5px rgba(0,0,0,0.05)"
@@ -33,6 +32,14 @@ const Panel = ({
       </Heading>
 
       <Box maxH="25rem" overflow="auto">
+        {!Object.entries(transactions).length && (
+          <Box p="1rem">
+            <Text as="i" color={colors.gray[400]}>
+              No {type === "transaction" ? "transactions" : "round-ups"} to
+              display
+            </Text>
+          </Box>
+        )}
         {Object.entries(transactions)
           .sort(([a], [b]) => (a > b ? -1 : a < b ? 1 : 0))
           .map(([date, transactions]) => (
