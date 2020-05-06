@@ -17,17 +17,7 @@ const Account = ({ account, single }) => {
   });
   const { colors } = useTheme();
   return (
-    <Box
-      color="white"
-      key={account.id}
-      borderRadius="4px"
-      bg={colors.pink[500]}
-      boxShadow="1px 1px 5px rgba(0,0,0,0.05)"
-      p="1rem"
-      flex={single ? "initial" : "1"}
-      margin="0 0.5rem"
-      w={single ? "calc(33.333% - 1.5rem)" : "auto"}
-    >
+    <Box color="white" key={account.id} p="2rem" flex="1">
       <Heading size="lg">
         {account.type === "uk_retail" ? "Personal Account" : "Joint Account"}
       </Heading>

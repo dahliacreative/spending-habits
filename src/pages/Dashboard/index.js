@@ -58,10 +58,16 @@ const Dashboard = ({ history, location }) => {
     : null;
 
   return (
-    <Flex flexDirection="column" minH="100vh">
+    <Flex flexDirection="column" minH="100vh" pt="4rem">
       <Header user={state.user} />
       <Flex flex="1">
-        <Box w="15rem" borderRight="1px" borderColor={colors.gray[200]}>
+        <Box
+          w="15rem"
+          boxShadow="0 0 3px rgba(0,0,0,0.25)"
+          position="fixed"
+          top="4rem"
+          bottom="0"
+        >
           <Heading
             p="1rem"
             size="md"
@@ -95,8 +101,8 @@ const Dashboard = ({ history, location }) => {
             </Box>
           ))}
         </Box>
-        <Box flex="1">
-          <Flex p="2rem 1.5rem">
+        <Box flex="1" pl="15rem">
+          <Flex bg={colors.pink[500]}>
             {activeAccount ? (
               <Account account={activeAccount} single />
             ) : (
