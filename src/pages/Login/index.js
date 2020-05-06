@@ -4,7 +4,7 @@ import { Button, Heading } from "@chakra-ui/core";
 import { v1 as uuid } from "uuid";
 
 const url = (id) =>
-  `https://auth.monzo.com/?client_id=${process.env.REACT_CLIENT_ID}&redirect_uri=${process.env.REACT_REDIRECT}&response_type=code&state=${id}`;
+  `https://auth.monzo.com/?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT}&response_type=code&state=${id}`;
 
 const Wrapper = styled.div`
   height: 100vh;
