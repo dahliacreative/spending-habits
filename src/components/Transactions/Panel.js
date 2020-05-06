@@ -7,12 +7,12 @@ const Panel = ({
   account,
   transactions,
   type = "transaction",
+  total,
   ...props
 }) => {
   const { colors } = useTheme();
   return (
     <Box
-      p="1rem 1rem 0"
       d="flex"
       flex="1"
       flexDirection="column"
@@ -26,13 +26,13 @@ const Panel = ({
         size="lg"
         borderBottom="1px"
         borderColor={colors.gray[200]}
-        pb="1rem"
+        p="1rem"
         color={colors.blue[900]}
       >
         {title}
       </Heading>
 
-      <Box maxH="25rem" overflow="auto" pb="1rem">
+      <Box maxH="25rem" overflow="auto">
         {Object.entries(transactions)
           .sort(([a], [b]) => (a > b ? -1 : a < b ? 1 : 0))
           .map(([date, transactions]) => (
@@ -42,7 +42,7 @@ const Panel = ({
                 borderBottom="1px"
                 borderColor={colors.gray[200]}
                 bg={colors.gray[100]}
-                p="0.25rem 0.5rem 0.3rem"
+                p="0.25rem 1rem 0.3rem"
               >
                 <Heading size="sm" color={colors.blue[800]}>
                   {moment(date).format("Do MMMM")}
@@ -67,7 +67,7 @@ const Panel = ({
                     alignItems="center"
                     borderBottom="1px"
                     borderColor={colors.gray[200]}
-                    p="0.5rem"
+                    p="0.5rem 1rem"
                   >
                     {type === "transaction" && (
                       <Image src={t.merchant.logo} size="2rem" mr="1rem" />
@@ -113,6 +113,19 @@ const Panel = ({
             </Box>
           ))}
       </Box>
+
+      <Flex p="1rem" justifyContent="flex-end" bg={colors.gray[100]}>
+        <Text mr="0.5rem">
+          {type === "transaction" ? "Total expenditure" : "Total round-ups"} for
+          this period:
+        </Text>
+        <Text as="b">
+          £
+          {type === "transaction"
+            ? ((total / 100) * -1).toFixed(2)
+            : (total / 100).toFixed(2)}
+        </Text>
+      </Flex>
     </Box>
   );
 };

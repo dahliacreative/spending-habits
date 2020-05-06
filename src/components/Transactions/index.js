@@ -30,13 +30,21 @@ const Transactions = ({ account, period }) => {
           "expand[]": "merchant",
         },
       });
+      const filteredTransactions = transactions.filter(
+        (t) => t.include_in_spending
+      );
+      const filteredRoundups = transactions.filter(
+        (t) => t.scheme === "uk_retail_pot"
+      );
       setState({
-        transactions: groupByDate(
-          transactions.filter((t) => t.include_in_spending)
+        transactions: groupByDate(filteredTransactions),
+        transactionsTotal: filteredTransactions.reduce(
+          (acc, curr) => acc + curr.amount,
+          0
         ),
-        roundups: groupByDate(
-          transactions.filter((t) => !t.include_in_spending)
-        ),
+        roundups: groupByDate(filteredRoundups),
+        roundupsTotal:
+          filteredRoundups.reduce((acc, curr) => acc + curr.amount, 0) * -1,
       });
     },
     [account, period],
@@ -63,12 +71,14 @@ const Transactions = ({ account, period }) => {
           account={account}
           transactions={state.transactions}
           mr="1.5rem"
+          total={state.transactionsTotal}
         />
         <Panel
           type="round"
           title="Round-ups"
           account={account}
           transactions={state.roundups}
+          total={state.roundupsTotal}
         />
       </Flex>
     </>
