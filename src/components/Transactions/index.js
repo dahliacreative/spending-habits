@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
-import { Flex } from "@chakra-ui/core";
+import { Flex, useTheme, Heading } from "@chakra-ui/core";
 import usePoll from "react-use-poll";
 import Panel from "./Panel";
 
@@ -16,6 +16,7 @@ const groupByDate = (collection) =>
 
 const Transactions = ({ account, period }) => {
   const [state, setState] = useState();
+  const { colors } = useTheme();
 
   usePoll(
     async () => {
@@ -47,20 +48,30 @@ const Transactions = ({ account, period }) => {
   if (!state) return null;
 
   return (
-    <Flex>
-      <Panel
-        title="Transactions"
-        account={account}
-        transactions={state.transactions}
-        mr="1.5rem"
-      />
-      <Panel
-        type="round"
-        title="Round-ups"
-        account={account}
-        transactions={state.roundups}
-      />
-    </Flex>
+    <>
+      <Heading
+        fontWeight="normal"
+        size="xl"
+        m="2rem 0 1rem"
+        color={colors.pink[500]}
+      >
+        Insights
+      </Heading>
+      <Flex>
+        <Panel
+          title="Transactions"
+          account={account}
+          transactions={state.transactions}
+          mr="1.5rem"
+        />
+        <Panel
+          type="round"
+          title="Round-ups"
+          account={account}
+          transactions={state.roundups}
+        />
+      </Flex>
+    </>
   );
 };
 

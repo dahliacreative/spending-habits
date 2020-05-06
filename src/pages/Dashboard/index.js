@@ -73,27 +73,21 @@ const Dashboard = ({ history, location }) => {
             size="md"
             borderBottom="1px"
             borderColor={colors.gray[200]}
+            mb="1rem"
           >
             You Accounts
           </Heading>
           {state.accounts.map((a) => (
             <Box key={`nav-${a.id}`}>
               <Link
-                p="1rem"
+                p="0.25rem 1rem"
                 d="block"
-                borderBottom="1px"
-                borderColor={colors.gray[200]}
                 key={a.id}
                 onClick={() => history.push({ search: `?account=${a.id}` })}
                 color={
                   activeAccount && activeAccount.id === a.id
-                    ? "white"
-                    : colors.gray[500]
-                }
-                bg={
-                  activeAccount && activeAccount.id === a.id
                     ? colors.pink[500]
-                    : "white"
+                    : colors.gray[500]
                 }
               >
                 {a.type === "uk_retail" ? "Personal Account" : "Joint Account"}
@@ -116,9 +110,7 @@ const Dashboard = ({ history, location }) => {
           {activeAccount && (
             <Box p="2rem">
               <Balance account={activeAccount.id} period={period} />
-              <Heading size="xl" m="2rem 0 1rem" color={colors.pink[500]}>
-                Insights
-              </Heading>
+
               <Transactions account={activeAccount} period={period} />
             </Box>
           )}

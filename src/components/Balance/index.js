@@ -60,7 +60,7 @@ const Balance = ({ account, period }) => {
 
   return (
     <>
-      <Heading size="xl" mb="1rem" color={colors.pink[500]}>
+      <Heading fontWeight="normal" size="xl" mb="1rem" color={colors.pink[500]}>
         Balance
       </Heading>
       <Flex>
