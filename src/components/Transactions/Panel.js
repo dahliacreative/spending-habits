@@ -100,10 +100,11 @@ const Panel = ({
                       </Text>
                       {type === "transaction" && (
                         <Text fontSize="xs" color={colors.gray[400]}>
-                          {
+                          {account.owners.find(
+                            (o) => o.user_id === t.user_id
+                          ) &&
                             account.owners.find((o) => o.user_id === t.user_id)
-                              .preferred_first_name
-                          }
+                              .preferred_first_name}
                         </Text>
                       )}
                     </Box>
