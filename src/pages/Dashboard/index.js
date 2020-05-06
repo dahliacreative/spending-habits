@@ -102,8 +102,29 @@ const Dashboard = ({ history, location }) => {
                 <Account account={activeAccount} single />
               </Flex>
               <Box p="2rem">
+                <Heading
+                  fontWeight="normal"
+                  size="xl"
+                  mb="1rem"
+                  color={colors.pink[500]}
+                >
+                  Balance
+                </Heading>
                 <Balance account={activeAccount.id} period={period} />
-                <Transactions account={activeAccount} period={period} />
+                <Heading
+                  fontWeight="normal"
+                  size="xl"
+                  m="2rem 0 1rem"
+                  color={colors.pink[500]}
+                >
+                  Insights
+                </Heading>
+                <Transactions
+                  account={activeAccount}
+                  period={period}
+                  startDate={period.startOfPeriod.format()}
+                  endDate={period.endOfPeriod.format()}
+                />
               </Box>
             </>
           )}

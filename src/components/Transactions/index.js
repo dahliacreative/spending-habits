@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../../api";
-import { Flex, useTheme, Heading } from "@chakra-ui/core";
+import { Flex, Box, Skeleton } from "@chakra-ui/core";
 import usePoll from "react-use-poll";
 import Panel from "./Panel";
 
@@ -14,9 +14,8 @@ const groupByDate = (collection) =>
     };
   }, {});
 
-const Transactions = ({ account, period }) => {
+const Transactions = ({ account, startDate, endDate }) => {
   const [state, setState] = useState();
-  const { colors } = useTheme();
 
   usePoll(
     async () => {
@@ -25,8 +24,8 @@ const Transactions = ({ account, period }) => {
       } = await api.get("/transactions", {
         params: {
           account_id: account.id,
-          since: period.startOfPeriod.format(),
-          before: period.endOfPeriod.format(),
+          since: startDate,
+          before: endDate,
           "expand[]": "merchant",
         },
       });
@@ -34,7 +33,7 @@ const Transactions = ({ account, period }) => {
         (t) => t.include_in_spending
       );
       const filteredRoundups = transactions.filter(
-        (t) => t.scheme === "uk_retail_pot"
+        (t) => t.scheme === "uk_retail_pot" && t.metadata.trigger === "coin_jar"
       );
       setState({
         transactions: groupByDate(filteredTransactions),
@@ -47,41 +46,39 @@ const Transactions = ({ account, period }) => {
           filteredRoundups.reduce((acc, curr) => acc + curr.amount, 0) * -1,
       });
     },
-    [account, period],
+    [account, startDate, endDate],
     {
       interval: 60000,
     }
   );
 
-  if (!state) return null;
+  if (!state)
+    return (
+      <Box>
+        <Skeleton h="1rem" my="1rem" w="25%" />
+        <Skeleton h="1rem" my="1rem" w="50%" />
+        <Skeleton h="1rem" my="1rem" w="33%" />
+        <Skeleton h="1rem" my="1rem" w="75%" />
+      </Box>
+    );
 
   return (
-    <>
-      <Heading
-        fontWeight="normal"
-        size="xl"
-        m="2rem 0 1rem"
-        color={colors.pink[500]}
-      >
-        Insights
-      </Heading>
-      <Flex>
-        <Panel
-          title="Transactions"
-          account={account}
-          transactions={state.transactions}
-          mr="1.5rem"
-          total={state.transactionsTotal}
-        />
-        <Panel
-          type="round"
-          title="Round-ups"
-          account={account}
-          transactions={state.roundups}
-          total={state.roundupsTotal}
-        />
-      </Flex>
-    </>
+    <Flex>
+      <Panel
+        title="Transactions"
+        account={account}
+        transactions={state.transactions}
+        mr="1.5rem"
+        total={state.transactionsTotal}
+      />
+      <Panel
+        type="round"
+        title="Round-ups"
+        account={account}
+        transactions={state.roundups}
+        total={state.roundupsTotal}
+      />
+    </Flex>
   );
 };
 

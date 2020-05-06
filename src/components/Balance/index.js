@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import api from "../../api";
-import { Heading, Flex, useTheme } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/core";
 import usePoll from "react-use-poll";
 import Panel from "./Panel";
+import { Skeleton, Box } from "@chakra-ui/core";
 
 const Balance = ({ account, period }) => {
   const [state, setState] = useState();
-  const { colors } = useTheme();
 
   usePoll(
     async () => {
@@ -41,7 +41,15 @@ const Balance = ({ account, period }) => {
     }
   );
 
-  if (!state) return null;
+  if (!state)
+    return (
+      <Box>
+        <Skeleton h="1rem" my="1rem" w="25%" />
+        <Skeleton h="1rem" my="1rem" w="50%" />
+        <Skeleton h="1rem" my="1rem" w="33%" />
+        <Skeleton h="1rem" my="1rem" w="75%" />
+      </Box>
+    );
 
   const leftThisMonth = state.balance;
   const monthPercent =
@@ -59,44 +67,39 @@ const Balance = ({ account, period }) => {
   const todayPercent = leftToday === 0 ? 0 : (leftToday / dailyBudget) * 100;
 
   return (
-    <>
-      <Heading fontWeight="normal" size="xl" mb="1rem" color={colors.pink[500]}>
-        Balance
-      </Heading>
-      <Flex>
-        <Panel
-          title="Left this month"
-          percent={monthPercent}
-          left={(leftThisMonth / 100).toFixed(2)}
-          total={state.monthlyBudget / 100}
-          spent={((state.monthlyBudget - leftThisMonth) / 100).toFixed(2)}
-          updateTotal={(monthlyBudget) =>
-            setState({
-              ...state,
-              monthlyBudget,
-            })
-          }
-          useInput
-        />
+    <Flex>
+      <Panel
+        title="Left this month"
+        percent={monthPercent}
+        left={(leftThisMonth / 100).toFixed(2)}
+        total={state.monthlyBudget / 100}
+        spent={((state.monthlyBudget - leftThisMonth) / 100).toFixed(2)}
+        updateTotal={(monthlyBudget) =>
+          setState({
+            ...state,
+            monthlyBudget,
+          })
+        }
+        useInput
+      />
 
-        <Panel
-          m="0 1.5rem"
-          title="Left this week"
-          percent={weekPercent}
-          left={(leftThisWeek / 100).toFixed(2)}
-          total={(weeklyBudget / 100).toFixed(2)}
-          spent={(state.spent_this_week / 100).toFixed(2)}
-        />
+      <Panel
+        m="0 1.5rem"
+        title="Left this week"
+        percent={weekPercent}
+        left={(leftThisWeek / 100).toFixed(2)}
+        total={(weeklyBudget / 100).toFixed(2)}
+        spent={(state.spent_this_week / 100).toFixed(2)}
+      />
 
-        <Panel
-          title="Left today"
-          percent={todayPercent}
-          left={(leftToday / 100).toFixed(2)}
-          total={(dailyBudget / 100).toFixed(2)}
-          spent={((state.spend_today * -1) / 100).toFixed(2)}
-        />
-      </Flex>
-    </>
+      <Panel
+        title="Left today"
+        percent={todayPercent}
+        left={(leftToday / 100).toFixed(2)}
+        total={(dailyBudget / 100).toFixed(2)}
+        spent={((state.spend_today * -1) / 100).toFixed(2)}
+      />
+    </Flex>
   );
 };
 
