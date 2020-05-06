@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Button, Heading } from "@chakra-ui/core";
-import { v5 as uuid } from "uuid";
+import { v1 as uuid } from "uuid";
 
 const url = (id) =>
   `https://auth.monzo.com/?client_id=${process.env.REACT_CLIENT_ID}&redirect_uri=http://localhost:3000/authenticate&response_type=code&state=${id}`;
