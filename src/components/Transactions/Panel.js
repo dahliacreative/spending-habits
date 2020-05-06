@@ -98,7 +98,7 @@ const Panel = ({
                       <Text fontSize="sm" as="b" color={colors.gray[600]}>
                         £{((t.amount / 100) * -1).toFixed(2)}
                       </Text>
-                      {type === "transactions" && (
+                      {type === "transaction" && (
                         <Text fontSize="xs" color={colors.gray[400]}>
                           {
                             account.owners.find((o) => o.user_id === t.user_id)
