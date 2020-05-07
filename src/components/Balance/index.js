@@ -10,6 +10,13 @@ const Balance = ({ account, period }) => {
 
   usePoll(
     async () => {
+      const {
+        data: { targets },
+      } = await api.get("/targets", {
+        params: {
+          account_id: account,
+        },
+      });
       const { data: balance } = await api.get("/balance", {
         params: {
           account_id: account,
@@ -24,9 +31,11 @@ const Balance = ({ account, period }) => {
           before: period.endOfCurrentWeek.format(),
         },
       });
+      const totalTarget = targets.find((t) => t.type === "total");
       setState({
         ...balance,
-        monthlyBudget: 140000,
+        targets,
+        monthlyBudget: totalTarget ? totalTarget.amount : 100000,
         spent_this_week:
           transactions
             .filter((t) => t.include_in_spending)
@@ -72,15 +81,6 @@ const Balance = ({ account, period }) => {
         title="Left this month"
         percent={monthPercent}
         left={(leftThisMonth / 100).toFixed(2)}
-        total={state.monthlyBudget / 100}
-        spent={((state.monthlyBudget - leftThisMonth) / 100).toFixed(2)}
-        updateTotal={(monthlyBudget) =>
-          setState({
-            ...state,
-            monthlyBudget,
-          })
-        }
-        useInput
       />
 
       <Panel

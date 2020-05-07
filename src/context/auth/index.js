@@ -14,12 +14,18 @@ const AuthProvider = ({ children }) => {
     };
   }
 
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+  };
+
   return (
     <Context.Provider
       value={{
         isAuthed: !!user,
         setUser,
         user,
+        logout,
       }}
     >
       {children}

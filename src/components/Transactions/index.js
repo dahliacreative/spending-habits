@@ -29,21 +29,35 @@ const Transactions = ({ account, startDate, endDate }) => {
           "expand[]": "merchant",
         },
       });
-      const filteredTransactions = transactions.filter(
+      const filteredSpending = transactions.filter(
         (t) => t.include_in_spending
       );
       const filteredRoundups = transactions.filter(
         (t) => t.scheme === "uk_retail_pot" && t.metadata.trigger === "coin_jar"
       );
+      const filteredTransactions = transactions.filter(
+        (t) => t.counterparty.account_number
+      );
+      const filteredAll = transactions.filter(
+        (t) =>
+          !t.metadata.hide_amount &&
+          !(t.scheme === "uk_retail_pot" && t.metadata.trigger === "user")
+      );
       setState({
-        transactions: groupByDate(filteredTransactions),
-        transactionsTotal: filteredTransactions.reduce(
+        spending: groupByDate(filteredSpending),
+        spendingTotal: filteredSpending.reduce(
           (acc, curr) => acc + curr.amount,
           0
         ),
         roundups: groupByDate(filteredRoundups),
         roundupsTotal:
           filteredRoundups.reduce((acc, curr) => acc + curr.amount, 0) * -1,
+        transactions: groupByDate(filteredTransactions),
+        transactionsTotals: filteredTransactions.reduce(
+          (acc, curr) => acc + curr.amount,
+          0
+        ),
+        all: groupByDate(filteredAll),
       });
     },
     [account, startDate, endDate],
@@ -63,22 +77,42 @@ const Transactions = ({ account, startDate, endDate }) => {
     );
 
   return (
-    <Flex>
-      <Panel
-        title="Transactions"
-        account={account}
-        transactions={state.transactions}
-        mr="1.5rem"
-        total={state.transactionsTotal}
-      />
-      <Panel
-        type="round"
-        title="Round-ups"
-        account={account}
-        transactions={state.roundups}
-        total={state.roundupsTotal}
-      />
-    </Flex>
+    <>
+      <Flex>
+        <Panel
+          type="spend"
+          title="Spending"
+          account={account}
+          transactions={state.spending}
+          mr="1.5rem"
+          total={state.spendingTotal}
+        />
+        <Panel
+          type="round"
+          title="Round-ups"
+          account={account}
+          transactions={state.roundups}
+          total={state.roundupsTotal}
+        />
+      </Flex>
+      <Flex mt="1.5rem">
+        <Panel
+          type="transactions"
+          title="Counterparty Transactions"
+          account={account}
+          transactions={state.transactions}
+          mr="1.5rem"
+          total={state.transactionsTotals}
+        />
+        <Panel
+          type="all"
+          title="All Transactions"
+          account={account}
+          transactions={state.all}
+          total={state.spendingTotal * -1 + state.roundupsTotal}
+        />
+      </Flex>
+    </>
   );
 };
 

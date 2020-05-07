@@ -3,21 +3,11 @@ import {
   Box,
   Heading,
   Text,
-  Input,
   CircularProgress,
   useTheme,
 } from "@chakra-ui/core";
 
-const Panel = ({
-  title,
-  percent,
-  left,
-  total,
-  spent,
-  useInput,
-  updateTotal,
-  ...props
-}) => {
+const Panel = ({ title, percent, left, total, spent, ...props }) => {
   const { colors } = useTheme();
   return (
     <Box
@@ -51,26 +41,14 @@ const Panel = ({
           <Heading
             mt="1.5rem"
             size="lg"
-            d="flex"
-            alignItems="center"
             color={colors.blue[800]}
+            textAlign="center"
           >
-            £{left} / £
-            {useInput ? (
-              <Input
-                w="10rem"
-                ml="0.5rem"
-                value={total}
-                onChange={({ target }) =>
-                  updateTotal(parseInt(target.value * 100))
-                }
-              />
-            ) : (
-              total
-            )}
+            £{left} {total && <>/ £{total}</>}
           </Heading>
-          <Text color={colors.gray[500]} mt="0.5rem">
-            Total spent: £{spent}
+
+          <Text color={spent ? colors.gray[500] : "white"} mt="0.5rem">
+            {spent ? <>Total spent: £{spent}</> : "-"}
           </Text>
         </Box>
       </Box>
