@@ -76,7 +76,7 @@ const Panel = ({
                     borderColor={colors.gray[200]}
                     p="0.5rem 1rem"
                   >
-                    {type === "transaction" && (
+                    {type === "transaction" && t.merchant && (
                       <Image src={t.merchant.logo} size="2rem" mr="1rem" />
                     )}
                     <Box>
