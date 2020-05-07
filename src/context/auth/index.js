@@ -20,7 +20,6 @@ const AuthProvider = ({ children }) => {
         isAuthed: !!user,
         setUser,
         user,
-        fromCache: !!storedUser,
       }}
     >
       {children}

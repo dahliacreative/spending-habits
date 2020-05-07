@@ -7,14 +7,12 @@ import Account from "../../components/Account";
 import { Box, Flex, Link, useTheme, Heading, Button } from "@chakra-ui/core";
 import qs from "query-string";
 import usePeriod from "./usePeriod";
-import { useAuth } from "../../context/auth";
 
 const Dashboard = ({ history, location }) => {
   const [state, setState] = useState();
   const [error, setError] = useState();
   const { colors } = useTheme();
   const period = usePeriod();
-  const { fromCache } = useAuth();
 
   const makeCall = () => {
     api
@@ -26,8 +24,8 @@ const Dashboard = ({ history, location }) => {
         });
         setError(false);
       })
-      .catch(() => {
-        setError(true);
+      .catch((e) => {
+        setError(e);
       });
   };
 
@@ -36,9 +34,10 @@ const Dashboard = ({ history, location }) => {
   const query = qs.parse(location.search);
 
   if (error) {
-    if (fromCache) {
+    if (error.response.status === 401) {
       localStorage.removeItem("user");
       history.replace("/");
+      return null;
     }
     return (
       <Flex
