@@ -80,7 +80,7 @@ const Panel = ({
                       <Image src={t.merchant.logo} size="2rem" mr="1rem" />
                     )}
                     <Box>
-                      {type === "transaction" && (
+                      {type === "transaction" && t.merchant && (
                         <Text fontSize="sm" color={colors.gray[600]}>
                           {t.merchant.name}
                         </Text>
